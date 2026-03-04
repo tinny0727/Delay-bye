@@ -12,9 +12,18 @@
   
   </header>
 
-<h2>Delay-人格測驗</h2>
+<h2>Delay-<br>人格測驗</h2>
 <h3>快來看看你是哪一型拖延小夥伴吧！
 經常/偶爾/很少</h3>
+
+<div class="progress-wrap">
+  <div class="progress-track">
+    <div id="progress-bar"></div>
+  </div>
+  <div class="progress-text">
+    <span id="current-q">1</span> / <span id="total-q">15</span>
+  </div>
+</div>
 
 <div id="quiz-container"></div>
 <div id="result"></div>
@@ -187,6 +196,7 @@ function showQuestion() {
     });
     
     container.appendChild(qDiv);
+    updateProgress();
   } else {
     showResult();
   }
@@ -202,10 +212,13 @@ function selectOption(value) {
 }
 /* 進度條 */
 function updateProgress() {
-  const percent = (index / quizData.length) * 100;
+  let percent = ((currentQuestion + 1) / quizData.length) * 100;
+  if(percent > 100) percent = 100;
   document.getElementById("progress-bar").style.width = percent + "%";
-}
 
+  document.getElementById("current-q").innerText =
+    Math.min(currentQuestion + 1, quizData.length);
+}
 function showResult() {
   const container = document.getElementById('quiz-container');
   container.innerHTML = "";
@@ -232,38 +245,40 @@ function showResult() {
     }
   }
 
-  resultDiv.innerHTML = `
-    <h4> Delay 人格成績單</h4>
 
-    <p style="font-size:1.1em; padding:10px; background:#f0f0ff; border-radius:10px;">
-      👉 <strong>${personalityText[topType]}</strong>
-    </p>
+resultDiv.innerHTML = `
+  <h4>Delay 人格成績單</h4>
 
-    <div class="score-item">
-      <div class="score-label">逃避型 ${percentages.avoid}%</div>
-      <div class="score-bg"><div class="score-bar" style="width:${percentages.avoid}%"></div></div>
-    </div>
+  <p id="personality-text">
+    <strong>${personalityText[topType]}</strong>
+  </p>
 
-    <div class="score-item">
-      <div class="score-label">分心型 ${percentages.dizzy}%</div>
-      <div class="score-bg"><div class="score-bar" style="width:${percentages.dizzy}%"></div></div>
-    </div>
+  <div class="score-item">
+    <div class="score-label">逃避型 ${percentages.avoid}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.avoid}%"></div></div>
+  </div>
 
-    <div class="score-item">
-      <div class="score-label">焦慮型 ${percentages.anxi}%</div>
-      <div class="score-bg"><div class="score-bar" style="width:${percentages.anxi}%"></div></div>
-    </div>
+  <div class="score-item">
+    <div class="score-label">分心型 ${percentages.dizzy}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.dizzy}%"></div></div>
+  </div>
 
-    <div class="score-item">
-      <div class="score-label">內耗型 ${percentages.lopie}%</div>
-      <div class="score-bg"><div class="score-bar" style="width:${percentages.lopie}%"></div></div>
-    </div>
+  <div class="score-item">
+    <div class="score-label">焦慮型 ${percentages.anxi}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.anxi}%"></div></div>
+  </div>
 
-    <div class="score-item">
-      <div class="score-label">完美型 ${percentages.perfy}%</div>
-      <div class="score-bg"><div class="score-bar" style="width:${percentages.perfy}%"></div></div>
-    </div>
-  `;
+  <div class="score-item">
+    <div class="score-label">內耗型 ${percentages.lopie}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.lopie}%"></div></div>
+  </div>
+
+  <div class="score-item">
+    <div class="score-label">完美型 ${percentages.perfy}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.perfy}%"></div></div>
+  </div>
+`;
+  
 }
 
 
